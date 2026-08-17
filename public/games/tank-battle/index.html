@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#07141a">
+  <meta name="description" content="浪尖阿走 · Azou 坦克大战——原创三关校园科技风坦克小游戏。">
+  <title>浪尖阿走 · Azou 坦克大战</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-one"></div>
+  <div class="ambient ambient-two"></div>
+
+  <main class="app-shell" aria-label="浪尖阿走坦克大战">
+    <header class="topbar">
+      <div class="brand-block">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <p class="overline">AZOU / ORIGINAL CAMPUS GAME</p>
+          <h1>浪尖阿走 · 坦克大战</h1>
+        </div>
+      </div>
+      <div class="top-actions">
+        <button id="homeButton" class="home-button" type="button">← 退出到主菜单</button>
+        <button id="helpButton" class="icon-button" type="button" aria-label="查看操作说明">?</button>
+        <button id="muteButton" class="icon-button" type="button" aria-label="关闭声音">♫</button>
+        <button id="pauseButton" class="icon-button" type="button" aria-label="暂停游戏">Ⅱ</button>
+      </div>
+    </header>
+
+    <section class="game-frame">
+      <div class="status-strip" aria-live="polite">
+        <div class="status-item"><span>关卡</span><strong id="levelValue">01 / 03</strong></div>
+        <div class="status-item"><span>生命</span><strong id="livesValue">● ● ●</strong></div>
+        <div class="status-item"><span>敌军</span><strong id="enemyValue">06</strong></div>
+        <div class="status-item"><span>分数</span><strong id="scoreValue">000000</strong></div>
+        <div class="status-item status-cooldown">
+          <span>装填</span>
+          <div class="meter"><i id="cooldownMeter"></i></div>
+        </div>
+      </div>
+
+      <div id="canvasWrap" class="canvas-wrap">
+        <canvas id="gameCanvas" width="960" height="640" aria-label="坦克大战游戏画面"></canvas>
+        <div class="scanlines" aria-hidden="true"></div>
+        <div id="comboBadge" class="combo-badge" aria-live="polite">COMBO ×2</div>
+        <div id="toast" class="toast" aria-live="polite"></div>
+        <div class="battle-actions" aria-label="战斗控制">
+          <button id="battlePauseButton" type="button">Ⅱ&nbsp; 暂停</button>
+          <button id="battleExitButton" type="button">← 退出到主菜单</button>
+        </div>
+
+        <section id="menuScreen" class="overlay-screen visible" aria-labelledby="menuTitle">
+          <div class="hero-panel">
+            <p class="panel-kicker">浪尖阿走原创作品 / ID: AZOU</p>
+            <h2 id="menuTitle"><span>守住基地</span><br>击穿三道防线</h2>
+            <p class="lead">穿越以 <b>AZOU</b> 拼成的砖墙阵地，击退来袭坦克。每一发炮弹，都在重塑战场。</p>
+
+            <div class="mission-grid" aria-label="游戏特色">
+              <article><b>03</b><span>递进关卡</span></article>
+              <article><b>24</b><span>来袭敌军</span></article>
+              <article><b>∞</b><span>原创战术</span></article>
+            </div>
+
+            <label class="difficulty-field" for="difficultySelect">
+              <span>作战难度</span>
+              <select id="difficultySelect">
+                <option value="easy">轻松体验</option>
+                <option value="normal" selected>标准行动</option>
+                <option value="hard">极限挑战</option>
+              </select>
+            </label>
+
+            <div class="hero-actions">
+              <button id="startButton" class="primary-button" type="button"><span>开始行动</span><i>→</i></button>
+              <button id="menuHelpButton" class="text-button" type="button">查看操作说明</button>
+            </div>
+            <p class="quick-tip">WASD / 方向键移动 · 空格 / J 发射 · P / Esc 暂停</p>
+          </div>
+        </section>
+
+        <section id="pauseScreen" class="overlay-screen compact" aria-labelledby="pauseTitle">
+          <div class="dialog-panel">
+            <p class="panel-kicker">TACTICAL HOLD</p>
+            <h2 id="pauseTitle">行动暂停</h2>
+            <p>战场状态已冻结，准备好后继续。</p>
+            <button id="resumeButton" class="primary-button" type="button"><span>继续行动</span><i>→</i></button>
+            <button id="pauseRestartButton" class="text-button" type="button">重新开始</button>
+            <button id="pauseExitButton" class="text-button danger-text" type="button">退出至首页</button>
+          </div>
+        </section>
+
+        <section id="transitionScreen" class="overlay-screen compact" aria-live="assertive">
+          <div class="level-card">
+            <span id="transitionIndex">MISSION 01</span>
+            <h2 id="transitionTitle">初入阵地</h2>
+            <p id="transitionText">击破砖墙，熟悉战场节奏。</p>
+            <div class="loading-line"><i></i></div>
+          </div>
+        </section>
+
+        <section id="resultScreen" class="overlay-screen compact" aria-labelledby="resultTitle">
+          <div class="dialog-panel result-panel">
+            <p id="resultKicker" class="panel-kicker">MISSION COMPLETE</p>
+            <h2 id="resultTitle">守卫成功</h2>
+            <p id="resultMessage">三道防线全部突破，基地安然无恙。</p>
+            <div class="result-stats">
+              <div><span>总分</span><strong id="resultScore">0</strong></div>
+              <div><span>用时</span><strong id="resultTime">00:00</strong></div>
+              <div><span>命中率</span><strong id="resultAccuracy">0%</strong></div>
+              <div><span>最佳</span><strong id="resultBest">0</strong></div>
+            </div>
+            <button id="restartButton" class="primary-button" type="button"><span>再次挑战</span><i>↻</i></button>
+            <button id="backToMenuButton" class="text-button" type="button">返回首页</button>
+          </div>
+        </section>
+
+        <section id="helpScreen" class="overlay-screen compact" aria-labelledby="helpTitle">
+          <div class="dialog-panel help-panel">
+            <button id="closeHelpButton" class="close-button" type="button" aria-label="关闭操作说明">×</button>
+            <p class="panel-kicker">FIELD MANUAL</p>
+            <h2 id="helpTitle">作战手册</h2>
+            <div class="help-grid">
+              <div class="key-cluster" aria-hidden="true"><kbd>W</kbd><span><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></span></div>
+              <p><b>移动与转向</b><span>也可使用键盘方向键；手机端使用左侧方向盘。</span></p>
+              <div class="key-cluster single" aria-hidden="true"><kbd>SPACE</kbd></div>
+              <p><b>发射炮弹</b><span>也可按 J；注意观察右上角装填进度。</span></p>
+              <div class="terrain-legend" aria-hidden="true"><i class="brick"></i><i class="steel"></i><i class="water"></i></div>
+              <p><b>善用地形</b><span>砖墙可摧毁，钢墙不可摧毁，水域不可通行。</span></p>
+            </div>
+            <p class="objective">消灭全部来袭敌军即可过关；玩家生命耗尽或基地被摧毁则行动失败。</p>
+          </div>
+        </section>
+      </div>
+
+      <div id="mobileControls" class="mobile-controls" aria-label="触屏控制">
+        <div class="dpad">
+          <button class="dpad-up" data-direction="up" aria-label="向上">▲</button>
+          <button class="dpad-left" data-direction="left" aria-label="向左">◀</button>
+          <span class="dpad-core"></span>
+          <button class="dpad-right" data-direction="right" aria-label="向右">▶</button>
+          <button class="dpad-down" data-direction="down" aria-label="向下">▼</button>
+        </div>
+        <button id="mobileFire" class="fire-button" type="button" aria-label="发射炮弹"><span>FIRE</span><i></i></button>
+      </div>
+    </section>
+
+    <footer class="footer-note">
+      <span>原创身份标识 <b>AZOU</b> 已融入地图</span>
+      <span>浪尖阿走 · 独立设计与实现</span>
+    </footer>
+  </main>
+
+  <div id="portraitNotice" class="portrait-notice">横屏体验更佳，请旋转设备</div>
+
+  <script src="js/config.js"></script>
+  <script src="js/maps.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/input.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
+
