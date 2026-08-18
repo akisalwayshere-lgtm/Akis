@@ -30,8 +30,8 @@ export const projects = [
     number: "02",
     type: "AI LAB",
     title: "AI 探索日志",
-    description: "记录我如何把 AI 用进学习、创作和生活。第一篇：大学生如何开始自己的 OPC。",
-    status: "● 点击阅读第一篇",
+    description: "记录我如何把 AI 用进学习、创作和生活：从大学生 OPC 分享，到人工智能训练师认证。",
+    status: "● 点击阅读日志",
     variant: "coral",
   },
   {

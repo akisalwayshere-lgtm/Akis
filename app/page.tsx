@@ -313,7 +313,7 @@ export default function Home() {
               <div className="project-content"><p className="card-index">{project.number} / {project.type}</p><h3>{project.title}</h3><p>{project.description}</p><span className="status">{project.status}</span></div>
             </button>
           ) : project.variant === "coral" ? (
-            <button className={`project-card ${project.variant}-card project-card-button`} type="button" data-reveal key={project.number} onClick={() => setAiJournalOpen(true)} aria-haspopup="dialog" aria-label="打开 AI 探索日志第一篇：大学生与 OPC">
+            <button className={`project-card ${project.variant}-card project-card-button`} type="button" data-reveal key={project.number} onClick={() => setAiJournalOpen(true)} aria-haspopup="dialog" aria-label="打开 AI 探索日志，阅读大学生与 OPC、人工智能训练师认证两项记录">
               <p className="card-index">{project.number} / {project.type}</p><h3>{project.title}</h3><p>{project.description}</p><span className="status">{project.status}</span>
             </button>
           ) : project.variant === "blue" ? (
@@ -423,9 +423,9 @@ export default function Home() {
           <div className="ai-journal-scroll">
             <button className="dialog-close" type="button" onClick={() => setAiJournalOpen(false)} aria-label="关闭 AI 探索日志">×</button>
             <header className="ai-journal-intro">
-              <p className="dialog-kicker">AI EXPLORATION JOURNAL · ENTRY 01</p>
-              <h2 id="ai-journal-title">从大学生，<br />到一人公司。</h2>
-              <p>一次关于 AI、行动力与个人创造力的 OPC 社区分享。</p>
+              <p className="dialog-kicker">AI EXPLORATION JOURNAL · ENTRIES 01—02</p>
+              <h2 id="ai-journal-title">把好奇，<br />变成一次次实践。</h2>
+              <p>从 OPC 社区分享，到人工智能训练师认证，记录我学习、表达与行动的轨迹。</p>
             </header>
             <article className="ai-journal-entry">
               <div className="ai-journal-photo-pair">
@@ -446,6 +446,27 @@ export default function Home() {
                 <p>作为一名大学生，我在 OPC 社区（One Person Company）分享大学生如何借助 AI，从一个想法出发，建立并实践属于自己的 OPC 公司。</p>
                 <p>对我来说，这不只是一场分享，也是一次把技术、行动力和个人创造力连接起来的尝试。</p>
                 <div className="ai-journal-tags" aria-label="文章关键词"><span>大学生</span><span>AI 实践</span><span>OPC</span></div>
+              </div>
+            </article>
+            <article className="ai-journal-entry ai-journal-entry-certificates">
+              <div className="ai-journal-certificate-pair">
+                <figure className="ai-journal-certificate">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/ai-trainer-junior.webp" alt="张宙的人工智能训练师初级证书" loading="lazy" decoding="async" />
+                  <figcaption>01 / JUNIOR</figcaption>
+                </figure>
+                <figure className="ai-journal-certificate">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src="/images/ai-trainer-advanced.webp" alt="张宙的人工智能训练师高级证书" loading="lazy" decoding="async" />
+                  <figcaption>02 / ADVANCED</figcaption>
+                </figure>
+              </div>
+              <div className="ai-journal-copy">
+                <p className="card-index">02 / AI TRAINER</p>
+                <h3>让热爱，拥有更清晰的刻度。</h3>
+                <p>从初级到高级，我先后完成人工智能训练师培训认证，也把对 AI 的兴趣整理成了一条更系统的学习路径。</p>
+                <p>证书不是学习的终点。对我来说，更重要的是继续把所学带回医学学习、内容创作和个人项目中，让每一次探索都沉淀为真正能被使用的能力。</p>
+                <div className="ai-journal-tags" aria-label="文章关键词"><span>AI 学习</span><span>训练师认证</span><span>持续实践</span></div>
               </div>
             </article>
             <footer className="ai-journal-footer">
